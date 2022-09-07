@@ -2,9 +2,9 @@
 9
 .tran 1m 50m{return}{return}
 2
+2
+R2
+I
 1
 Vin
-V
-1
-Vout
 V

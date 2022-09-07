@@ -8,7 +8,7 @@ StateButton::StateButton (int pin, short num_states) : pin_num{pin}, states{num_
 
 StateButton::~StateButton () {} 
 
-void StateButton::setup_button (void) { 
+void StateButton::setup (void) { 
     pinMode(pin_num,INPUT_PULLUP); 
 }
 

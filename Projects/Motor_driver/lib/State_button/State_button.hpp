@@ -23,7 +23,7 @@ class StateButton : public LoopElement {
     ~StateButton ();
 
     //intialize the button 
-    void setup_button (void); 
+    void setup (void); 
 
     //return the current state
     short current_state (void); 
