@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include "State_button.hpp"
 #include "light.hpp"
+#include "rgb_light.hpp"
 
 StateButton sb1 {0,2}; //button on pin 0 
 StateButton sb2 {1,2}; //button on pin 1 
@@ -8,8 +9,9 @@ StateButton sb3 {6,2}; //button on pin 6
 StateButton sb4 {7,2}; //button on pin 7
 
 LEDLight rl1 {12,150}; //light on pin 12 
+RGBLight rgb1 {9,10,11,150}; 
 
-const int loops = 5; 
+const int loops = 6; 
 LoopElement* loop_call[loops]; 
 
 short last_state1 = 2; 
@@ -31,6 +33,9 @@ void setup() {
   sb2.setup(); 
   sb3.setup(); 
   sb4.setup(); 
+
+  rl1.setup(); 
+  rgb1.setup(); 
 
   Serial.begin(9600); 
 
