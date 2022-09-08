@@ -1,5 +1,7 @@
 #include "rgb_light.hpp"
 
+rgb_color::rgb_color(int r=125, int g=125, int b=125) : r_col{r}, g_col{g}, b_col {b} {} 
+
 RGBLight::RGBLight(int pin1, int pin2, int pin3, unsigned long blinkf) : 
                 pin_num1{pin1}, 
                 pin_num2{pin2}, 
@@ -24,6 +26,7 @@ void RGBLight::set_brightness(int bright) {
 
 void RGBLight::set_color (rgb_color _col) {
     _color = _col; 
+    on(); 
 }
 
 void RGBLight::on() {

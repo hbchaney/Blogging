@@ -10,7 +10,7 @@ StateButton sb4 {7,2}; //button on pin 7
 
 
 LEDLight rl1 {12,150}; //light on pin 12 
-RGBLight rgb1 {9,10,11,150}; 
+RGBLight rgb1 {11,10,9,150}; 
 
 const int loops = 6; 
 LoopElement* loop_call[loops]; 
@@ -20,6 +20,10 @@ short last_state2 = 2;
 short last_state3 = 2; 
 short last_state4 = 2; 
 
+rgb_color red {255,0,0}; 
+rgb_color green {0,255,0}; 
+rgb_color blue {0,0,255}; 
+
 void setup() {
   // put your setup code here, to run once:
 
@@ -28,6 +32,7 @@ void setup() {
   loop_call[2] = &sb3; 
   loop_call[3] = &sb4; 
   loop_call[4] = &rl1;
+  loop_call[5] = &rgb1;
 
 
   sb1.setup(); 
@@ -37,6 +42,8 @@ void setup() {
 
   rl1.setup(); 
   rgb1.setup(); 
+  rgb1.set_brightness(2); 
+  rgb1.on(); 
 
   Serial.begin(9600); 
 
@@ -49,18 +56,22 @@ void loop() {
   if (sb1.current_state() != last_state1) {  
     last_state1 = sb1.current_state(); 
     rl1.on(); 
+    rgb1.set_color(red); 
   }
   if (sb2.current_state() != last_state2) { 
     last_state2 = sb2.current_state(); 
     rl1.off(); 
+    rgb1.set_color(green); 
   }
   if (sb3.current_state() != last_state3) { 
     last_state3 = sb3.current_state(); 
     rl1.blink_on(); 
+    rgb1.set_color(blue); 
   }
   if (sb4.current_state() != last_state4) { 
     last_state4 = sb4.current_state(); 
     rl1.blink_off(); 
+    
   }
 
 
