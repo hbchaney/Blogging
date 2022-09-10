@@ -1,4 +1,7 @@
 #include <Arduino.h>
+#include <Wire.h>
+#include "Adafruit_GFX.h"
+#include "Adafruit_LEDBackpack.h"
 
 void setup() {
   // put your setup code here, to run once:
