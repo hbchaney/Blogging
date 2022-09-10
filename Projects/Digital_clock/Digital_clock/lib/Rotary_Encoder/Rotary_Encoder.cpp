@@ -40,11 +40,11 @@ unsigned long RotaryEncoder::check_button() {
     //returns how long the button has been held down for 
     //might add in a delay after button presses of a certain length 
     if (digitalRead(button_pin) == LOW) {
-        if (press_start == 0) { 
+        if (press_start == 0 && button_toggle) { 
             press_start = millis(); 
+            button_toggle = 1; 
             return 0; 
         } 
-        return millis() - press_start; 
     }
     press_start = 0; 
     return 0; 
