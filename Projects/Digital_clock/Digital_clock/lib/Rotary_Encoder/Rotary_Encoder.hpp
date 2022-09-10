@@ -15,6 +15,7 @@ class RotaryEncoder : public LoopElement {
     bool button_toggle = 0;     
     int output_buffer = 0; //this buffer will be used with loop check to see if anything has been pressed 
     unsigned long press_start;  
+    //checks to see if there was a increment +1 or -1 
     int check_increment();
     unsigned long check_button(); 
 
