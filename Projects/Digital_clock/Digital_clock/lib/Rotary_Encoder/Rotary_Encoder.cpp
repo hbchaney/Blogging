@@ -16,18 +16,16 @@ RotaryEncoder::~RotaryEncoder() {}
 int RotaryEncoder::check_increment() { 
     l = digitalRead(in_pin1);
     r = digitalRead(in_pin2);
-    lrmem = ((lrmem & 0x03) << 2) + 2*l + r;
+    lrmem = ((lrmem & 0b00000011) << 2) + 2*l + r;
     lrsum = lrsum + TRANS[lrmem];
     /* encoder not in the neutral state */
     if(lrsum % 4 != 0) return(0);
     /* encoder in the neutral state */
-    if (lrsum == 4)
-        {
+    if (lrsum == 4) {
         lrsum=0;
         return(1);
         }
-    if (lrsum == -4)
-        {
+    if (lrsum == -4) {
         lrsum=0;
         return(-1);
         }

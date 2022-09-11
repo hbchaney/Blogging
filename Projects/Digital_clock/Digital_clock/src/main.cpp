@@ -2,6 +2,7 @@
 #include <Wire.h>
 #include "Adafruit_GFX.h"
 #include "Adafruit_LEDBackpack.h"
+#include "Rotary_Encoder.hpp"
 
 void setup() {
   // put your setup code here, to run once:
