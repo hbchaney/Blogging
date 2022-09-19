@@ -1,5 +1,17 @@
 #include "snake.hpp"
 
+bool Coord::operator==(Coord ref) 
+{ 
+    if (ref._x == _x && ref._y == _y) 
+    { 
+        return 1; 
+    }
+    else 
+    { 
+        return 0; 
+    }
+}
+
 Snake::Snake(unsigned long update,uint16_t col) : update_rate {update}, snake_color{col} {} 
 
 Snake::~Snake () 
@@ -36,15 +48,49 @@ void Snake::change_direction(short change)
 
 void Snake::update_position() 
 {
+    //updating the snake extension 
+    for(int i = ext_length; i > 0; i --) 
+    { 
+        snake_extension[i] = snake_extension[i-1]; 
+    }
+    snake_extension[0] = snake_body[0]; 
     //updating the snake tail 
     for(int i = 4; i > 0; i--)
     {
         snake_body[i] = snake_body[i-1]; 
     }
+    //moving the head in the new direction 
     short x = (snake_body[0]._x + direction._x + 8) % 8; 
     short y = (snake_body[0]._y + direction._y + 8) % 8; 
     snake_body[0] = {x,y}; 
 
+}
+
+bool Snake::check_collision() 
+{ 
+    //collision in the main body 
+    for (int i=1; i < 5; i++) 
+    { 
+        if (snake_body[0] == snake_body[i])
+        { 
+            return 1; //there is a collision 
+        }
+    }
+    //collision in the extension 
+    for (int i = 0; i < ext_length; i ++) 
+    { 
+        if (snake_body[0] == snake_extension[0]) 
+        { 
+            return 1; 
+        }
+    }
+
+    return 0; 
+}
+
+void Snake::increase_length(int len) 
+{ 
+    ext_length += len; 
 }
 
 
@@ -55,6 +101,11 @@ void Snake::loop_check()
     { 
         //update the position 
         update_position(); 
+
+        //check for collision after position 
+        bool col = check_collision(); 
+
+        //stuff here if there is a collision 
 
         //turn off the led at the tail position 
         drawPixel(snake_body[4]._x,snake_body[4]._y,LED_OFF); 
