@@ -11,8 +11,6 @@ Snake::Snake()
 
 void Snake::change_direction(int change) 
 { 
-
-    //1 for cw
     short x; 
     short y;  
     
