@@ -17,7 +17,7 @@ struct Coord
 class Object : public LoopElement
 {
     protected:
-    static Coord nullcoord;  //the non pointer  
+    static Coord nullcoord;  //the null coord to not display/delete anything 
     Coord display_buffer; 
     Coord off_buffer; 
 
@@ -29,9 +29,10 @@ class Object : public LoopElement
     Coord pull_display_buffer();  
     Coord pull_off_buffer();  
 
+    //this game has a max of 1 pixel update and 1 pixel delete per frame for each object 
     virtual void update_display_buffer() = 0; 
     virtual void update_off_buffer() = 0; 
 
-    virtual void loop_check() override; 
+    virtual void loop_check() override;  //override from loop check 
 
 };
