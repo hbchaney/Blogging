@@ -9,3 +9,24 @@ Snake::Snake()
     }
 }
 
+void Snake::change_direction(int change) 
+{ 
+
+    //1 for cw
+    short x; 
+    short y;  
+    
+    if (change == -1) //ccw turn 
+    {
+        x = direction._y; 
+        y = -direction._x; 
+        direction = {x,y}; 
+    }
+    else if (change == 1) 
+    { 
+        x = -direction._y; 
+        y = direction._x;
+        direction = {x,y}; 
+    }
+}
+
