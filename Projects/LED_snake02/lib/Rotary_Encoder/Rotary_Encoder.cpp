@@ -21,6 +21,7 @@ void RotaryEncoder::setup() {
 }
 
 int RotaryEncoder::check_increment() { 
+    //returns 1 or -1 
     l = digitalRead(in_pin1);
     r = digitalRead(in_pin2);
     lrmem = ((lrmem & 0b00000011) << 2) + 2*l + r;

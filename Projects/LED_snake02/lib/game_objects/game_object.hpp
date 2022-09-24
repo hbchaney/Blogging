@@ -1,27 +1,16 @@
 #pragma once 
 #include "Adafruit_LEDBackpack.h"
 #include "Loop_Element.hpp"
-
-struct Coord 
-{ 
-    short _x= -5;
-    short _y= -5; 
-
-    Coord(); 
-    bool operator=(Coord); 
-    Coord(int,int); 
-
-};
+#include "Coords.hpp"
 
 
 class Object : public LoopElement
 {
     protected:
-    static Coord nullcoord;  //the null coord to not display/delete anything 
     Coord display_buffer; 
     Coord off_buffer; 
 
-    public: 
+    public:  
     uint16_t object_color;
 
     Object(); 
@@ -33,6 +22,6 @@ class Object : public LoopElement
     virtual void update_display_buffer() = 0; 
     virtual void update_off_buffer() = 0; 
 
-    virtual void loop_check() override;  //override from loop check 
+    void loop_check() override;  //override from loop check 
 
 };
