@@ -22,6 +22,6 @@ class Object : public LoopElement
     virtual void update_display_buffer() = 0; 
     virtual void update_off_buffer() = 0; 
 
-    void loop_check() override;  //override from loop check 
+    virtual void loop_check() override;  //override from loop check 
 
 };

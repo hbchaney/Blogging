@@ -3,22 +3,22 @@
 
 Object::Object() 
 { 
-    display_buffer= {-5,-5}; 
-    off_buffer = {-5,-5}; 
+    display_buffer= Coord::nullCoord; 
+    off_buffer = Coord::nullCoord; 
     
 }
 
 Coord Object::pull_display_buffer() 
 { 
     Coord Coord_new = display_buffer; 
-    display_buffer = Coord::nullcoord(); 
+    display_buffer = Coord::nullCoord; 
     return Coord_new; 
 }
 
 Coord Object::pull_off_buffer() 
 { 
     Coord Coord_new = off_buffer; 
-    off_buffer = Coord::nullcoord(); 
+    off_buffer = Coord::nullCoord; 
     return Coord_new; 
 }
 

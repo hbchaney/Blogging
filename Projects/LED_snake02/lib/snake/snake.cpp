@@ -83,7 +83,6 @@ void Snake::update_position()
     //moving the snake head now 
     Body[0]._x = (direction._x + Body[0]._x + 8) % 8; 
     Body[0]._y = (direction._y + Body[0]._y + 8) % 8;  
-    Serial.println("hello");
 
 }
 
@@ -98,8 +97,3 @@ void Snake::update_off_buffer()
     off_buffer = Extension[ext_length]; 
 }
 
-void Snake::loop_check() 
-{ 
-    update_display_buffer(); 
-    update_off_buffer(); 
-}

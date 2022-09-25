@@ -1,5 +1,7 @@
 #include "Coords.hpp"
 
+const Coord Coord::nullCoord {-5,-5};
+
 Coord::Coord() 
 { 
 

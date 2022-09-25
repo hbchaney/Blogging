@@ -29,6 +29,4 @@ class Snake : public Object
     void update_display_buffer() override; 
     void update_off_buffer() override; 
 
-    void loop_check(); 
-
 };

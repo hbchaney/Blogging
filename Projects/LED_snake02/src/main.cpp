@@ -28,13 +28,14 @@ class SnakeGame : public LoopElement , Adafruit_BicolorMatrix
 SnakeGame::SnakeGame(RotaryEncoder* re1) : re{re1} 
 {
   snk.object_color = LED_GREEN; 
-  setBrightness(7); 
-  clear(); 
 } 
 
-bool SnakeGame::begin(uint8_t _addr = 0x70, TwoWire *theWire = &Wire) 
+bool SnakeGame::begin(uint8_t _addr = 0x70, TwoWire *theWire = &Wire1) 
 { 
-    return Adafruit_BicolorMatrix::begin(_addr,&Wire); 
+    return Adafruit_BicolorMatrix::begin(_addr,&Wire1); 
+    setBrightness(7); 
+    clear(); 
+    writeDisplay();
 }
 
 void SnakeGame::draw_Coords(Object* ob_ptr) 
@@ -76,13 +77,13 @@ SnakeGame sg{&re1};
 void setup() 
 { 
     sg.begin(); 
+    re1.setup();
 }
 
 void loop() 
 {
   // put your main code here, to run repeatedly:
   sg.loop_check();
-  sg.debug(); 
    
 
 }
