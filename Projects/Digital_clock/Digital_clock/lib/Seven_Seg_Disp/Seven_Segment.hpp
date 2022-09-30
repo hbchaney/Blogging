@@ -6,7 +6,6 @@
 
 class SevenSegment : Adafruit_7segment {
 
-    
 
 };
 
