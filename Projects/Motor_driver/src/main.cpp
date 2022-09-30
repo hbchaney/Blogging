@@ -10,9 +10,9 @@ GLOBALS
 
 TB6612 motor_drive; 
 
-StateButton sb1 {0,2}; //button on pin 0 
-StateButton sb2 {1,2}; //button on pin 1 
-StateButton sb3 {6,2}; //button on pin 6
+StateButton sb1 {0,2}; //button on pin 0 pause/play
+StateButton sb2 {1,2}; //button on pin 1 reverse/forward 
+StateButton sb3 {6,11}; //button on pin 6 speed toggle 
 StateButton sb4 {7,2}; //button on pin 7
 
 LEDLight rl1 {12,150}; //light on pin 12 
@@ -21,17 +21,36 @@ RGBLight rgb1 {11,10,9,150};
 const int loops = 6; 
 LoopElement* loop_call[loops]; 
 
-short last_state1 = 0; 
-short last_state2 = 2; 
-short last_state3 = 2; 
+short last_state1 = 0; //pause/play
+short last_state2 = 2; //reverse/forward 
+short last_state3 = 2; //speed toggle 
 short last_state4 = 2; 
 
 bool running = 0; 
 bool blink_toggle = 0; 
 
-rgb_color red {255,0,0}; 
-rgb_color green {0,255,0}; 
-rgb_color blue {0,0,255}; 
+struct speed_color 
+{ 
+  rgb_color col; 
+  int8_t speed; 
+};
+
+//11 speeds from 40 to 255 toggle with button 3 
+
+speed_color sp0 {{255,0,0},40}; //red 
+speed_color sp1 {{255,128,0},60}; //orange 
+speed_color sp2 {{255,255,0},80}; //yellow 
+speed_color sp3 {{128,255,0},100}; // yellow green 
+speed_color sp4 {{0,255,0},120}; //green 
+speed_color sp5 {{0,255,128},140}; //bluish green 
+speed_color sp6 {{0,255,255},160}; //light blue 
+speed_color sp7 {{0,0,255},180}; //blue 
+speed_color sp8 {{128,0,255},200}; //purple 
+speed_color sp9 {{255,0,255},220}; //magenta 
+speed_color sp10 {{255,255,255},255}; //white 
+
+speed_color* all_col[] = {&sp0,&sp1,&sp2,&sp3,&sp4,&sp5,&sp6,&sp7,&sp8,&sp9,&sp10};
+
 
 void setup() {
   // put your setup code here, to run once:
@@ -103,7 +122,8 @@ void loop() {
 
   if (sb3.current_state() != last_state3) { 
     last_state3 = sb3.current_state(); 
-    rgb1.set_color(blue); 
+    rgb1.set_color(sp0.col);
+    motor_drive.set_speed(sp0.speed); 
   }
 
   //

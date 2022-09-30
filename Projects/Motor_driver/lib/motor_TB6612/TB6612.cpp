@@ -42,7 +42,11 @@ void TB6612::start()
 void TB6612::set_speed(int spd) 
 { 
     speed = spd; 
-    analogWrite(speed_pin,speed);
+    if (running = true)
+    {
+      analogWrite(speed_pin,speed);  
+    }
+    
 }
 
 void TB6612::reverse() 

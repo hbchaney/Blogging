@@ -24,13 +24,14 @@ class RGBLight : public LoopElement {
 
 
     public: 
+    //int1 red, int2 green, int3 blue, blink frequency 
     RGBLight (int,int,int,unsigned long); 
     ~RGBLight (); 
     
     //setup for the RGB light 
     void setup(); 
 
-    //set the color of the light 
+    //set the color of the light using a rgb_color type {red,blue,green}
     void set_color(rgb_color);
 
     //set brightness from 1 to 10
