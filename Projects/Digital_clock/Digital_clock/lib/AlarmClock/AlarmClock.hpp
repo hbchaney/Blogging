@@ -16,8 +16,9 @@ class AlarmClock : public LoopElement
     int r_cache; 
 
     //current shown 
-    int hour; 
-    int minute; 
+    int hour = 1; 
+    int minute = 0; 
+    bool am = 1; 
 
     //mode set 
     int set_mode; //a1,a2,clc

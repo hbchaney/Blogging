@@ -60,3 +60,40 @@ void AlarmClock::modeSet_readcache()
         
     }
 }
+
+void AlarmClock::timeSet_loop() 
+{ 
+    //display the current time 
+
+    disp->clear(); 
+
+    //writing the hour 
+    if (hour / 10) 
+    { 
+        disp->writeDigitNum(0,1); 
+    }
+    disp->writeDigitNum(1,hour % 10); 
+
+    //writing minute 
+    if (minute / 10) 
+    { 
+        disp->writeDigitNum(2,minute / 10);
+    }
+    disp->writeDigitNum(3,minute % 10); 
+
+}
+
+void AlarmClock::timeSet_readcache() 
+{ 
+    //pulls the value from r_cache and either sets the time or changes the hour/minute values 
+    if (r_cache != 0) 
+    { 
+        int pulled = r_cache; 
+        r_cache = 0; 
+
+        if (abs(pulled) == 1) 
+        { 
+            int  = minute + pulled; 
+        }
+    }
+}
