@@ -22,6 +22,7 @@ class RotaryEncoder : public LoopElement {
     int check_button(); 
 
     public: 
+    //pin1, pin2, sw pin
     RotaryEncoder(int,int,int); 
     ~RotaryEncoder(); 
 

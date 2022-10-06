@@ -3,6 +3,7 @@
 #include "Adafruit_LEDBackpack.h"
 #include "Rotary_Encoder.hpp"
 #include "RTClib.h"
+#include "Buzzer.hpp"
 
 class AlarmClock : public LoopElement 
 {   
@@ -13,6 +14,7 @@ class AlarmClock : public LoopElement
     Adafruit_7segment* disp; 
     RotaryEncoder* re; 
     RTC_PCF8523* rtc; 
+    Buzzer* buz; 
     int r_cache; 
 
     //current shown 
@@ -28,10 +30,14 @@ class AlarmClock : public LoopElement
     DateTime alarm2; 
     bool alarm1_on = 0; 
     bool alarm2_on = 0;
+    //alarm beepin 
+    bool alarm_beep = 0;
+    unsigned long alarm_shutoff_length = 30000; 
+    unsigned long alarm_shutoff_timer = 0; 
 
     //set mode blinker timers 
     unsigned long blink_time = 200; 
-    unsigned long last_blink; 
+    unsigned long last_blink = 0; 
     bool blink = false; 
 
     public: 
@@ -44,20 +50,17 @@ class AlarmClock : public LoopElement
 
     //mode set loop function 
 
-    void modeSet_loop (); 
+    void modeSet_loop (); //asks for setting the alarms and clc 
         void modeSet_readcache (); 
+            void modeSet_loop2(); 
 
     //displays the current time from hour / minute and calls timeSet_readcache() 
     void timeSet_loop ();
         //pulls from the r_cache and adjusts the values of hour/ minute and calls save_time if button is pressed 
         void timeSet_readcache (); 
-            void save_time(int); 
-
-    void AlarmOn_loop(); 
-        void AlarmOn_readcache(); 
 
     void showClock_loop(); 
-        void showClock_readcache(); 
+        void showClock_readcache(); //for turning off alarm 
 
     //main loop checks to see if the re has called for mode set loop 
     void loop_check() override; 
