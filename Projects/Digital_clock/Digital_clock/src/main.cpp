@@ -6,33 +6,28 @@
 #include "RTClib.h"
 #include <vector>
 #include "Buzzer.hpp"
+#include "AlarmClock.hpp"
 
 Buzzer buzz {7}; 
-RotaryEncoder re{11,12,13}; 
-int puller; 
+RotaryEncoder re{12,11,13};
+RTC_PCF8523 rtc;  
+Adafruit_7segment disp; 
+
+AlarmClock clc {&disp, &re, &rtc}; 
 
 void setup() 
 {
+  disp.begin(); 
   buzz.begin(); 
   re.setup();
+  rtc.begin(&Wire1); 
 }
 
 void loop() 
 {
   // put your main code here, to run repeatedly:
 
-  puller = re.pull_cache();
-  if (puller == 5) 
-  { 
-      if (buzz.status()) 
-      { 
-        buzz.off();
-      }
-      else 
-      { 
-        buzz.on(); 
-      }
-  }
+  clc.loop_check(); 
   buzz.loop_check(); 
   re.loop_check();
 

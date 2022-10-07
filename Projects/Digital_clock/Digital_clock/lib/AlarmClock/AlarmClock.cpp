@@ -28,7 +28,7 @@ void AlarmClock::modeSet_loop()
     case 2: 
         disp->writeDigitAscii(0,'C');
         disp->writeDigitAscii(1,'L');
-        disp->writeDigitAscii(2,'C');
+        disp->writeDigitAscii(3,'C');
         disp->writeDisplay(); 
         break;
     }
@@ -54,7 +54,7 @@ void AlarmClock::modeSet_loop2()
     if (val) 
     { 
         disp->clear(); 
-        disp->writeDigitAscii(2,'O'); 
+        disp->writeDigitAscii(1,'O'); 
         disp->writeDigitAscii(3,'n'); 
         disp->writeDisplay(); 
     }
@@ -63,8 +63,8 @@ void AlarmClock::modeSet_loop2()
         //printing that the alarm is off
         disp->clear(); 
         disp->writeDigitAscii(1,'O'); 
-        disp->writeDigitAscii(2,'f'); 
         disp->writeDigitAscii(3,'f'); 
+        disp->writeDigitAscii(4,'f'); 
         disp->writeDisplay(); 
 
     }
@@ -90,7 +90,7 @@ void AlarmClock::modeSet_loop2()
         { 
             if (val) 
             { 
-
+                current_loop = &AlarmClock::showClock_loop; 
             }
         }
     }
@@ -142,9 +142,9 @@ void AlarmClock::timeSet_loop()
     //writing minute 
     if (minute / 10) 
     { 
-        disp->writeDigitNum(2,minute / 10);
+        disp->writeDigitNum(3,minute / 10);
     }
-    disp->writeDigitNum(3,minute % 10); 
+    disp->writeDigitNum(4,minute % 10); 
 
     disp->writeDisplay(); 
     timeSet_readcache(); 
@@ -224,27 +224,29 @@ void AlarmClock::showClock_loop()
     //update the time 
     minute = static_cast<int>(rtc->now().minute()); 
     hour = static_cast<int>(rtc->now().twelveHour());
-    am = (rtc->now().hour() / 13)^1; // set am true or not 
+    am = (rtc->now().hour() / 12)^1; // set am true or not 
 
     //clear display 
-    disp->clear(); 
+    disp->clear();
+    //add : 
+    disp->writeColon(); 
     // write the am 
     if (am) 
     { 
-        disp->writeDigitNum(3,minute % 10); 
+        disp->writeDigitNum(4,minute % 10); 
     }
     else 
     { 
-        disp->writeDigitNum(3,minute % 3, true); 
+        disp->writeDigitNum(4,minute % 3, true); 
     }
-    disp->writeDigitNum(2,minute / 10); 
+    disp->writeDigitNum(3,minute / 10); 
 
     //write the pm 
     if (hour / 10) 
     { 
         disp->writeDigitNum(0,1); 
     }
-    disp->writeDigitNum(0,hour % 10); 
+    disp->writeDigitNum(1,hour % 10); 
     //send to display 
     disp->writeDisplay(); 
 
@@ -252,4 +254,66 @@ void AlarmClock::showClock_loop()
     //check to see if the alarm should trigger    
     check_alarm();
     showClock_readcache(); 
+}
+
+void AlarmClock::check_alarm() 
+{ 
+    //checks to see if the time has hit an alarm time 
+    // has the alarm recently gone off 
+    if (last_alarm_trigger + 60000 > millis()) 
+    {
+        return; // return if not enough time has past 
+
+    }
+
+    //alarm1 check if on 
+    if (alarm1_on) 
+    { 
+        if (minute == alarm1.minute() && rtc->now().hour() == alarm1.hour())
+        {
+            last_alarm_trigger = millis(); 
+            buz->on(); 
+
+        }
+    }
+
+    if (alarm2_on) 
+    { 
+        if (minute == alarm2.minute() && rtc->now().hour() == alarm2.hour())
+        {
+            last_alarm_trigger = millis(); 
+        }
+    }
+}
+
+
+void AlarmClock::showClock_readcache() 
+{ 
+    if (r_cache != 0) 
+    { 
+        if (buz->status()) 
+        { 
+            if (r_cache == 5)
+            {
+                buz->off(); 
+            }
+        }
+
+        r_cache = 0; 
+    }
+}
+
+
+void AlarmClock::loop_check() 
+{ 
+    r_cache = re->pull_cache(); 
+    if (r_cache == 7) 
+    { 
+        current_loop = &AlarmClock::modeSet_loop; 
+        r_cache = 0; 
+    }
+
+    (this->*current_loop)(); 
+
+    
 }

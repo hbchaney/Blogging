@@ -9,7 +9,7 @@ class AlarmClock : public LoopElement
 {   
     //typedef for the function ptr 
     typedef void (AlarmClock::*loop_ptr)(void); 
-    loop_ptr current_loop; 
+    loop_ptr current_loop = &AlarmClock::showClock_loop ; 
     //shared variables
     Adafruit_7segment* disp; 
     RotaryEncoder* re; 
@@ -31,7 +31,6 @@ class AlarmClock : public LoopElement
     bool alarm1_on = 0; 
     bool alarm2_on = 0;
     //alarm beepin 
-    bool alarm_beep = 0;
     unsigned long last_alarm_trigger = 0; //this is to prevent the alarm from going off twice in one minute
     bool alarm_ready = true; //alarm has not gone off in the minute 
 
