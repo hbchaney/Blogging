@@ -32,8 +32,8 @@ class AlarmClock : public LoopElement
     bool alarm2_on = 0;
     //alarm beepin 
     bool alarm_beep = 0;
-    unsigned long alarm_shutoff_length = 30000; 
-    unsigned long alarm_shutoff_timer = 0; 
+    unsigned long last_alarm_trigger = 0; //this is to prevent the alarm from going off twice in one minute
+    bool alarm_ready = true; //alarm has not gone off in the minute 
 
     //set mode blinker timers 
     unsigned long blink_time = 200; 
@@ -50,8 +50,10 @@ class AlarmClock : public LoopElement
 
     //mode set loop function 
 
+    private:
+
     void modeSet_loop (); //asks for setting the alarms and clc 
-        void modeSet_readcache (); 
+        void modeSet_readcache (); // inputs for mode cycling 
             void modeSet_loop2(); 
 
     //displays the current time from hour / minute and calls timeSet_readcache() 
@@ -61,6 +63,9 @@ class AlarmClock : public LoopElement
 
     void showClock_loop(); 
         void showClock_readcache(); //for turning off alarm 
+        void check_alarm(); // check to see if the alarm can/needs to be turned on 
+
+    public:
 
     //main loop checks to see if the re has called for mode set loop 
     void loop_check() override; 

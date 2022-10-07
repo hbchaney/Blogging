@@ -12,8 +12,9 @@ void AlarmClock::modeSet_loop()
     2 = clc
     */
    //shown the modes
-   switch(set_mode) 
-   {
+    disp->clear(); 
+    switch(set_mode) 
+    {
     case 0: 
         disp->writeDigitAscii(0,'A'); 
         disp->writeDigitNum(1,1); 
@@ -29,9 +30,10 @@ void AlarmClock::modeSet_loop()
         disp->writeDigitAscii(1,'L');
         disp->writeDigitAscii(2,'C');
         disp->writeDisplay(); 
-   }
+        break;
+    }
 
-   modeSet_readcache(); 
+    modeSet_readcache(); 
 
 }
 
@@ -220,14 +222,34 @@ void AlarmClock::timeSet_readcache()
 void AlarmClock::showClock_loop() 
 { 
     //update the time 
-    minute = static_cast<uint8_t>(rtc->now().minute()); 
-    hour = static_cast<uint8_t>(rtc->now().twelveHour());
-    am = (rtc->now().hour() / 13)^1; 
-    //if pm 
+    minute = static_cast<int>(rtc->now().minute()); 
+    hour = static_cast<int>(rtc->now().twelveHour());
+    am = (rtc->now().hour() / 13)^1; // set am true or not 
+
+    //clear display 
+    disp->clear(); 
+    // write the am 
+    if (am) 
+    { 
+        disp->writeDigitNum(3,minute % 10); 
+    }
+    else 
+    { 
+        disp->writeDigitNum(3,minute % 3, true); 
+    }
+    disp->writeDigitNum(2,minute / 10); 
+
+    //write the pm 
+    if (hour / 10) 
+    { 
+        disp->writeDigitNum(0,1); 
+    }
+    disp->writeDigitNum(0,hour % 10); 
+    //send to display 
+    disp->writeDisplay(); 
 
 
-    //check to see if the alarm should trigger 
-
-
+    //check to see if the alarm should trigger    
+    check_alarm();
     showClock_readcache(); 
 }

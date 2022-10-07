@@ -24,11 +24,14 @@ void Buzzer::loop_check()
 { 
     if (active) 
     { 
-        if (beep_length + last_beep < millis())
+        if (last_switch + times[timing_location] < millis())
         {
-            digitalWrite(pin_num,sound); 
             sound ^= 1; 
-            last_beep = millis(); 
+            digitalWrite(pin_num,sound); 
+
+            last_switch = millis(); 
+            timing_location = (timing_location + 1) % 4; 
+            
         }
     }
 }
