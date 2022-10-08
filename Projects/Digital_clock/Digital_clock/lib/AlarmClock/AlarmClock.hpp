@@ -42,7 +42,7 @@ class AlarmClock : public LoopElement
     public: 
 
     //init function 
-    AlarmClock(Adafruit_7segment*,RotaryEncoder*,RTC_PCF8523*); 
+    AlarmClock(Adafruit_7segment*,RotaryEncoder*,RTC_PCF8523*,Buzzer*); 
 
     //destructor function 
     ~AlarmClock(); 

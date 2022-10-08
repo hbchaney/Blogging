@@ -13,7 +13,7 @@ RotaryEncoder re{12,11,13};
 RTC_PCF8523 rtc;  
 Adafruit_7segment disp; 
 
-AlarmClock clc {&disp, &re, &rtc}; 
+AlarmClock clc {&disp, &re, &rtc, &buzz}; 
 
 void setup() 
 {
@@ -21,6 +21,8 @@ void setup()
   buzz.begin(); 
   re.setup();
   rtc.begin(&Wire1); 
+
+  buzz.on(); 
 }
 
 void loop() 

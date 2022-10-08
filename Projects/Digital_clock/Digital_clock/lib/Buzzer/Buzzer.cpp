@@ -12,6 +12,7 @@ void Buzzer::begin()
 void Buzzer::on() 
 { 
     active = true; 
+    on_start = millis(); 
 }
 
 void Buzzer::off()
@@ -33,6 +34,10 @@ void Buzzer::loop_check()
             timing_location = (timing_location + 1) % 4; 
             
         }
+    }
+    if (on_start + auto_shutoff < millis()) 
+    { 
+        active = false; 
     }
 }
 
