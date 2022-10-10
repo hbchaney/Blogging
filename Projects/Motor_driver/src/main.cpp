@@ -51,6 +51,23 @@ speed_color sp10 {{255,255,255},255}; //white
 
 speed_color* all_col[] = {&sp0,&sp1,&sp2,&sp3,&sp4,&sp5,&sp6,&sp7,&sp8,&sp9,&sp10};
 
+/* 
+EEPROM section 
+sets up a eeprom cycle
+there are two parts to this data saving and the eeprom full cycle button 
+
+data loading: 
+should record the times going down, 
+the time held, 
+and the time spent going up 
+
+full cycle: 
+should go down for the specifed time 
+should hold then go up from there 
+the on board light will start blinking to show recording mode 
+the on board light will turn solid when goind up 
+*/ 
+
 
 void setup() {
   // put your setup code here, to run once:
