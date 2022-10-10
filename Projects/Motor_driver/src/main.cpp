@@ -32,7 +32,7 @@ bool blink_toggle = 0;
 struct speed_color 
 { 
   rgb_color col; 
-  int8_t speed; 
+  int speed; 
 };
 
 //11 speeds from 40 to 255 toggle with button 3 
@@ -122,8 +122,8 @@ void loop() {
 
   if (sb3.current_state() != last_state3) { 
     last_state3 = sb3.current_state(); 
-    rgb1.set_color(sp0.col);
-    motor_drive.set_speed(sp0.speed); 
+    rgb1.set_color(all_col[last_state3]->col);
+    motor_drive.set_speed(all_col[last_state3]->speed); 
   }
 
   //
