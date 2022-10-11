@@ -68,6 +68,9 @@ the on board light will start blinking to show recording mode
 the on board light will turn solid when goind up 
 */ 
 
+bool setting_EEPROM = false; 
+bool running_set_loop = false; 
+
 
 void setup() {
   // put your setup code here, to run once:

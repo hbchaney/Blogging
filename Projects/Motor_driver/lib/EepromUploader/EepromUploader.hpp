@@ -17,7 +17,7 @@ struct times
     ~times(); 
 
     void begin();
-    void reset_times(uint32_t, uint32_t, uint32_t);
+    void reset_times();
 
     private: 
     //memory address locations for eeprom // should take up 4 locations 
