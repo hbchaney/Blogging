@@ -130,7 +130,77 @@ void AlarmClock::modeSet_readcache()
     }
 }
 
-void AlarmClock::timeSet_loop() 
+void AlarmClock::timeSet_loop () 
+{ 
+    //disp the time and blink the hour and colon 
+    disp->clear(); 
+
+    //writing the hour 
+    if (blink) 
+    { 
+        if (hour / 10) 
+        { 
+            disp->writeDigitNum(0,1); 
+        }
+        disp->writeDigitNum(1,hour % 10); 
+        disp->drawColon(true); 
+    }
+    
+
+    if (minute / 10) 
+    { 
+        disp->writeDigitNum(3,minute / 10);
+    }
+    if (am) 
+    { 
+        disp->writeDigitNum(4,minute % 10); 
+    }
+    else 
+    { 
+        disp->writeDigitNum(4,minute % 10,true); 
+    }
+    
+    disp->writeDisplay(); 
+    timeSet_readcache(); 
+
+}
+
+void AlarmClock::timeSet_readcache() 
+{ 
+    if (r_cache != 0) 
+    { 
+        int pulled = r_cache; 
+        r_cache = 0; 
+
+        if (abs(pulled) == 1) 
+        { 
+            hour += pulled; 
+            if (hour == 13) 
+            { 
+                hour = 1; 
+            }
+            else if ( hour == 0) 
+            { 
+                hour = 12; 
+            }
+            
+            if (hour == 12 && pulled == 1) 
+            {
+                am = !am;
+            }
+            if (hour == 11 && pulled == -1) 
+            { 
+                am = !am; 
+            }
+        }
+
+        if (pulled == 5) 
+        { 
+            current_loop = &AlarmClock::timeSet_loop2; 
+        }
+    }
+}
+void AlarmClock::timeSet_loop2 () 
 { 
     //display the current time 
 
@@ -144,26 +214,33 @@ void AlarmClock::timeSet_loop()
     disp->writeDigitNum(1,hour % 10); 
 
     //writing minute 
-    if (minute / 10) 
+
+    if (blink) 
     { 
-        disp->writeDigitNum(3,minute / 10);
+        if (minute / 10) 
+        { 
+            disp->writeDigitNum(3,minute / 10);
+        }
+        if (am) 
+        { 
+            disp->writeDigitNum(4,minute % 10); 
+        }
+        else 
+        { 
+            disp->writeDigitNum(4,minute % 10,true); 
+        }
+        disp->drawColon(true); 
     }
-    if (am) 
-    { 
-        disp->writeDigitNum(4,minute % 10); 
-    }
-    else 
-    { 
-        disp->writeDigitNum(4,minute % 10,true); 
-    }
+    
 
 
     disp->writeDisplay(); 
-    timeSet_readcache(); 
+    timeSet_readcache2(); 
 
 }
 
-void AlarmClock::timeSet_readcache() 
+
+void AlarmClock::timeSet_readcache2 () 
 { 
     //pulls the value from r_cache and either sets the time or changes the hour/minute values 
     if (r_cache != 0) 
@@ -174,37 +251,8 @@ void AlarmClock::timeSet_readcache()
         // knob turned positively / negatively
         if (abs(pulled) == 1) 
         { 
-            minute += pulled;
-
-            //minute overflow condition
-            if (minute > 59) 
-            {
-                minute = 0; 
-                hour += 1; 
-                if (hour == 12) 
-                {
-                    am ^= 1; 
-                }
-                
-                //hour overflow condition
-                if (hour > 12) 
-                { 
-                    hour = 1; 
-                }
-            }
-            if (minute < 0) 
-            { 
-                minute = 59; 
-                if (hour == 12) 
-                {   
-                    am ^= 1; 
-                }
-                hour -= 1; 
-                if (hour < 1) 
-                { 
-                    hour = 12; 
-                }
-            }
+            minute += pulled; 
+            minute = (minute + 60) % 60; 
         }
 
         if (pulled == 5) 
@@ -269,7 +317,7 @@ void AlarmClock::showClock_loop()
     }
     else 
     { 
-        disp->writeDigitNum(4,minute % 3, false); 
+        disp->writeDigitNum(4,minute % 10, false); 
     }
     disp->writeDigitNum(3,minute / 10); 
 
@@ -347,6 +395,13 @@ void AlarmClock::loop_check()
     }
 
     (this->*current_loop)(); 
+
+    //checking on the blinking 
+    if (blink_time + last_blink < millis())
+    { 
+        last_blink = millis(); 
+        blink = !blink; 
+    }
 
     
 }

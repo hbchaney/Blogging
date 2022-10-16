@@ -35,7 +35,7 @@ class AlarmClock : public LoopElement
     bool alarm_ready = true; //alarm has not gone off in the minute 
 
     //set mode blinker timers 
-    unsigned long blink_time = 200; 
+    unsigned long blink_time = 250; 
     unsigned long last_blink = 0; 
     bool blink = false; 
 
@@ -56,9 +56,11 @@ class AlarmClock : public LoopElement
             void modeSet_loop2(); 
 
     //displays the current time from hour / minute and calls timeSet_readcache() 
-    void timeSet_loop ();
+    void timeSet_loop (); //sets the hour 
+    void timeSet_loop2 ();
         //pulls from the r_cache and adjusts the values of hour/ minute and calls save_time if button is pressed 
         void timeSet_readcache (); 
+        void timeSet_readcache2 (); 
 
     void showClock_loop(); 
         void showClock_readcache(); //for turning off alarm 
