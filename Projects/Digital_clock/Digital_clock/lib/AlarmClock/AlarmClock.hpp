@@ -41,8 +41,14 @@ class AlarmClock : public LoopElement
 
     public: 
 
-    //init function 
-    AlarmClock(Adafruit_7segment*,RotaryEncoder*,RTC_PCF8523*,Buzzer*); 
+    /*!
+     * @brief set the display and other peripherals 
+     * @param sev the seven seg pointer 
+     * @param rot rotary encoder pointer 
+     * @param r real time clock pointer 
+     * @param b buzzer pointer 
+     */
+    AlarmClock(Adafruit_7segment* sev,RotaryEncoder* rot,RTC_PCF8523* r,Buzzer* b); 
 
     //destructor function 
     ~AlarmClock(); 
